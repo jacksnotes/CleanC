@@ -1,0 +1,61 @@
+{
+    "name": "cleanc",
+    "version": "1.0.0",
+    "description": "智能C盘空间管理工具 - 可视化分析 + 一键清理",
+    "main": "electron/main.js",
+    "scripts": {
+        "dev": "vite",
+        "build": "vue-tsc && vite build && electron-builder",
+        "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+        "preview": "vite preview"
+    },
+    "keywords": [
+        "disk",
+        "cleaner",
+        "windows",
+        "c-drive"
+    ],
+    "author": "",
+    "license": "MIT",
+    "build": {
+        "appId": "com.cleanc.app",
+        "productName": "CleanC",
+        "directories": {
+            "output": "dist"
+        },
+        "files": [
+            "dist/renderer/**/*",
+            "electron/**/*",
+            "public/**/*"
+        ],
+        "win": {
+            "target": "nsis",
+            "icon": "public/image/256.ico"
+        },
+        "nsis": {
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true,
+            "installerIcon": "public/image/256.ico",
+            "uninstallerIcon": "public/image/256.ico",
+            "installerHeaderIcon": "public/image/256.ico",
+            "deleteAppDataOnUninstall": true,
+            "uninstallDisplayName": "CleanC 卸载程序",
+            "include": "build/installer.nsh"
+        }
+    },
+    "dependencies": {
+        "echarts": "^5.5.0",
+        "vue": "^3.4.0",
+        "vue-echarts": "^6.6.8"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^5.0.0",
+        "concurrently": "^8.2.2",
+        "electron": "^28.0.0",
+        "electron-builder": "^24.9.1",
+        "typescript": "^5.3.0",
+        "vite": "^5.0.0",
+        "vue-tsc": "^3.1.8",
+        "wait-on": "^7.2.0"
+    }
+}
