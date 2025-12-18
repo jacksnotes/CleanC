@@ -117,8 +117,8 @@ CleanC/
 If this project helps you, consider buying the author a coffee ☕
 
 <p align="center">
-  <img src="public/image/wechat_pay.png" alt="微信支付 WeChat Pay" width="200">
-  <img src="public/image/paypal.png" alt="PayPal" width="200">
+  <img src="public/image/wechat_pay.jpg" alt="微信支付 WeChat Pay" width="200">
+  <img src="public/image/paypal.jpg" alt="PayPal" width="200">
 </p>
 
 ---
