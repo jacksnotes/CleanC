@@ -41,10 +41,16 @@
             "deleteAppDataOnUninstall": true,
             "uninstallDisplayName": "CleanC 卸载程序",
             "include": "build/installer.nsh"
+        },
+        "publish": {
+            "provider": "github",
+            "owner": "jacksnotes",
+            "repo": "CleanC"
         }
     },
     "dependencies": {
         "echarts": "^5.5.0",
+        "electron-updater": "^6.6.2",
         "lucide-vue-next": "^0.562.0",
         "vue": "^3.4.0",
         "vue-echarts": "^6.6.8"

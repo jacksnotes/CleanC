@@ -3,9 +3,68 @@ const path = require('path')
 const fs = require('fs')
 const os = require('os')
 const { exec, spawn } = require('child_process')
+const { autoUpdater } = require('electron-updater')
 
 const isDev = !app.isPackaged
 let mainWindow, tray = null
+
+// 配置自动更新
+autoUpdater.autoDownload = false
+autoUpdater.autoInstallOnAppQuit = true
+
+// 自动更新事件处理
+function setupAutoUpdater() {
+    if (isDev) return // 开发模式不检查更新
+
+    autoUpdater.on('checking-for-update', () => {
+        console.log('Checking for updates...')
+    })
+
+    autoUpdater.on('update-available', (info) => {
+        console.log('Update available:', info.version)
+        if (mainWindow) {
+            mainWindow.webContents.send('update-available', info)
+        }
+        // 自动下载更新
+        autoUpdater.downloadUpdate()
+    })
+
+    autoUpdater.on('update-not-available', () => {
+        console.log('No updates available')
+    })
+
+    autoUpdater.on('download-progress', (progress) => {
+        console.log('Download progress:', progress.percent)
+        if (mainWindow) {
+            mainWindow.webContents.send('update-progress', progress)
+        }
+    })
+
+    autoUpdater.on('update-downloaded', (info) => {
+        console.log('Update downloaded:', info.version)
+        if (mainWindow) {
+            mainWindow.webContents.send('update-downloaded', info)
+        }
+        // 提示用户安装更新
+        dialog.showMessageBox(mainWindow, {
+            type: 'info',
+            title: '更新就绪 | Update Ready',
+            message: `新版本 ${info.version} 已下载完成，是否立即安装？\n\nVersion ${info.version} downloaded. Install now?`,
+            buttons: ['安装 Install', '稍后 Later']
+        }).then((result) => {
+            if (result.response === 0) {
+                autoUpdater.quitAndInstall()
+            }
+        })
+    })
+
+    autoUpdater.on('error', (err) => {
+        console.error('Update error:', err)
+    })
+
+    // 启动时检查更新
+    autoUpdater.checkForUpdates()
+}
 
 // 恢复区配置 - 使用 C 盘用户数据目录，确保同盘移动速度快
 const RECOVERY_ZONE = path.join(os.homedir(), 'AppData', 'Local', 'CleanC', 'RecoveryZone')
@@ -1273,6 +1332,7 @@ app.whenReady().then(() => {
     ensureRecoveryZone()
     createWindow()
     createTray()
+    setupAutoUpdater() // 检查更新
 })
 
 app.on('window-all-closed', () => { })
