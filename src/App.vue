@@ -12,7 +12,7 @@
           :class="{ active: activeTab === 'main' }"
           @click="activeTab = 'main'"
         >
-          <span class="icon">🧹</span>
+          <Brush :size="18" />
           {{ t.tabClean }}
         </button>
         <button 
@@ -20,7 +20,7 @@
           :class="{ active: activeTab === 'analysis' }"
           @click="activeTab = 'analysis'"
         >
-          <span class="icon">🔍</span>
+          <Search :size="18" />
           {{ t.tabAnalysis }}
         </button>
         <button 
@@ -28,7 +28,7 @@
           :class="{ active: activeTab === 'recovery' }"
           @click="activeTab = 'recovery'; loadRecoveryItems()"
         >
-          <span class="icon">🗄️</span>
+          <Archive :size="18" />
           {{ t.tabRecovery }}
           <span class="recovery-badge" v-if="recoveryItems.length">{{ recoveryItems.length }}</span>
         </button>
@@ -39,9 +39,9 @@
         </button>
         
         <div class="admin-status" :class="isAdminMode ? 'admin' : 'not-admin'">
-          <span v-if="isAdminMode">🛡️ {{ t.adminMode }}</span>
+          <span v-if="isAdminMode"><Shield :size="16" /> {{ t.adminMode }}</span>
           <button v-else class="btn btn-sm btn-warning" @click="requestAdminRestart">
-            ⚠️ {{ t.elevatePrivilege }}
+            <AlertTriangle :size="16" /> {{ t.elevatePrivilege }}
           </button>
         </div>
       </div>
@@ -54,7 +54,7 @@
         <!-- 磁盘概览卡片 -->
         <div class="disk-overview card">
           <div class="disk-header">
-            <div class="disk-icon">💾</div>
+            <div class="disk-icon"><HardDrive :size="32" /></div>
             <div class="disk-info">
               <h2>C: {{ t.diskSpace }}</h2>
               <p class="disk-path">{{ t.localDisk }}</p>
@@ -97,11 +97,11 @@
         <!-- Treemap 可视化 -->
         <div class="treemap-container card">
           <div class="card-header">
-            <h3>📊 {{ t.spaceDistribution }}</h3>
+            <h3>{{ t.spaceDistribution }}</h3>
             <div class="treemap-actions">
               <span class="badge" v-if="folderData.length">{{ folderData.length }} {{ t.folders }}</span>
               <button class="btn btn-sm" v-if="selectedFolder" @click="selectedFolder = null">
-                返回上层
+                {{ t.goBack }}
               </button>
             </div>
           </div>
@@ -114,14 +114,14 @@
               @click="handleTreemapClick"
             />
             <div v-else class="treemap-empty">
-              <span class="empty-icon">📁</span>
+              <Folder :size="48" class="empty-icon-svg" />
               <p>{{ t.clickToViewSpace }}</p>
             </div>
           </div>
           <!-- 选中文件夹详情 -->
           <div class="folder-detail" v-if="selectedFolder" :key="selectedFolder.path">
             <div class="folder-detail-header">
-              <span class="folder-icon">📂</span>
+              <FolderOpen :size="24" class="folder-icon-svg" />
               <div class="folder-info">
                 <strong>{{ selectedFolder.name }}</strong>
                 <span class="folder-path">{{ selectedFolder.path }}</span>
@@ -129,7 +129,7 @@
               <span class="folder-size">{{ formatSize(selectedFolder.value) }}</span>
             </div>
             <button class="btn btn-sm" @click="openFolder(selectedFolder.path)">
-              <span class="icon">📁</span> {{ t.openFolder }}
+              <FolderOpen :size="16" /> {{ t.openFolder }}
             </button>
           </div>
         </div>
@@ -141,7 +141,7 @@
         <div class="scan-control card">
           <button class="btn btn-primary btn-large" @click="startScan" :disabled="isScanning">
             <span v-if="isScanning" class="spinner"></span>
-            <span v-else class="icon">🔍</span>
+            <Search :size="18" v-else />
             {{ isScanning ? t.scanning : t.startScan }}
           </button>
           
@@ -169,7 +169,7 @@
         <!-- 可清理项目列表 -->
         <div class="cleanable-list card">
           <div class="card-header">
-            <h3>🧹 {{ t.cleanableItems }}</h3>
+            <h3><Brush :size="18" /> {{ t.cleanableItems }}</h3>
             <div class="header-actions">
               <button class="btn btn-sm" @click="selectAllSafe" :disabled="cleanableItems.length === 0">
                 {{ t.selectAllSafe }}
@@ -192,7 +192,7 @@
                 <input type="checkbox" v-model="item.selected" />
                 <span class="checkmark"></span>
               </label>
-              <div class="item-icon">{{ item.icon }}</div>
+              <div class="item-icon"><File :size="20" /></div>
               <div class="item-info">
                 <span class="item-name">{{ item.name }}</span>
                 <span class="item-desc">{{ item.description }}</span>
@@ -204,7 +204,7 @@
           </div>
 
           <div class="empty-state" v-else-if="!isScanning">
-            <span class="empty-icon">📭</span>
+            <Archive :size="48" class="empty-icon-svg" />
             <p>{{ t.noCleanableItems }}</p>
             <p class="empty-hint">{{ t.clickToScan }}</p>
           </div>
@@ -221,7 +221,7 @@
               :disabled="isCleaning"
             >
               <span v-if="isCleaning" class="spinner"></span>
-              <span v-else class="icon">🗑️</span>
+              <Trash2 :size="18" v-else />
               {{ isCleaning ? t.cleaning : t.oneClickClean }}
             </button>
           </div>
@@ -230,7 +230,7 @@
         <!-- TOP 占用排行 -->
         <div class="top-folders card" v-if="topFolders.length > 0">
           <div class="card-header">
-            <h3>📈 {{ t.topUsage }}</h3>
+            <h3>{{ t.topUsage }}</h3>
           </div>
           <div class="top-list">
             <div 
@@ -256,7 +256,7 @@
       <div class="recovery-container">
         <div class="card recovery-card">
           <div class="card-header">
-            <h3>🗄️ {{ t.recoveryZone }}</h3>
+            <h3><Archive :size="18" /> {{ t.recoveryZone }}</h3>
             <p class="recovery-hint">{{ t.recoveryHint }}</p>
           </div>
 
@@ -266,7 +266,7 @@
               :key="item.id"
               class="recovery-item"
             >
-              <div class="recovery-item-icon">🗂️</div>
+              <File :size="24" class="recovery-item-icon-svg" />
               <div class="recovery-item-info">
                 <span class="recovery-item-name">{{ getRecoveryItemName(item.originalPath) }}</span>
                 <span class="recovery-item-path">{{ item.originalPath }}</span>
@@ -275,17 +275,17 @@
               <div class="recovery-item-size">{{ formatSize(item.size) }}</div>
               <div class="recovery-item-actions">
                 <button class="btn btn-sm btn-success" @click="restoreItem(item)" :disabled="isRestoring">
-                  <span class="icon">↩️</span> {{ t.restore }}
+                  <RotateCcw :size="16" /> {{ t.restore }}
                 </button>
                 <button class="btn btn-sm btn-danger" @click="permanentDelete(item)" :disabled="isRestoring">
-                  <span class="icon">🗑️</span> {{ t.permanentDelete }}
+                  <Trash2 :size="16" /> {{ t.permanentDelete }}
                 </button>
               </div>
             </div>
           </div>
 
           <div class="empty-state" v-else>
-            <span class="empty-icon">📭</span>
+            <Archive :size="48" class="empty-icon-svg" />
             <p>{{ t.emptyRecovery }}</p>
             <p class="empty-hint">{{ t.emptyRecoveryHint }}</p>
           </div>
@@ -310,7 +310,7 @@
         <!-- 控制面板 -->
         <div class="analysis-controls card">
           <div class="analysis-header">
-            <h3>🔍 {{ t.largeFileAnalysis }}</h3>
+            <h3><Search :size="18" /> {{ t.largeFileAnalysis }}</h3>
             <p class="analysis-desc">{{ t.largeFileHint }}</p>
           </div>
           
@@ -321,7 +321,7 @@
               :disabled="isAnalyzing"
             >
               <span v-if="isAnalyzing" class="spinner"></span>
-              <span v-else class="icon">🔎</span>
+              <Search :size="18" v-else />
               {{ isAnalyzing ? t.analyzing : t.startAnalysis }}
             </button>
             
@@ -330,7 +330,7 @@
               class="btn btn-warning btn-large"
               @click="cancelScan"
             >
-              ✕ {{ t.cancelScan }}
+              <X :size="16" /> {{ t.cancelScan }}
             </button>
             
             <div class="scan-settings" v-if="!isAnalyzing">
@@ -343,7 +343,7 @@
           
           <!-- 扫描提示 -->
           <div class="scan-warning" v-if="isAnalyzing">
-            ⚠️ {{ t.scanWarning }}
+            <AlertTriangle :size="16" /> {{ t.scanWarning }}
           </div>
           
           <!-- 排除目录设置 -->
@@ -352,7 +352,7 @@
             <div class="exclude-list">
               <div v-for="(_, index) in excludeDirs" :key="index" class="exclude-item">
                 <input type="text" v-model="excludeDirs[index]" :placeholder="lang === 'zh' ? '输入目录路径' : 'Enter directory path'" />
-                <button class="btn btn-sm btn-ghost" @click="excludeDirs.splice(index, 1)">✕</button>
+                <button class="btn btn-sm btn-ghost" @click="excludeDirs.splice(index, 1)"><X :size="14" /></button>
               </div>
               <button class="btn btn-sm" @click="excludeDirs.push('')">+ {{ t.addDirectory }}</button>
             </div>
@@ -365,8 +365,8 @@
             </div>
             <div class="progress-details">
               <p class="progress-text">{{ analysisStatus }}</p>
-              <p class="progress-path" v-if="currentScanPath && isAnalyzing">📂 {{ currentScanPath }}</p>
-              <span class="elapsed-time" v-if="scanDuration > 0">⏱️ {{ scanDuration }}秒</span>
+              <p class="progress-path" v-if="currentScanPath && isAnalyzing"><FolderOpen :size="14" /> {{ currentScanPath }}</p>
+              <span class="elapsed-time" v-if="scanDuration > 0">{{ scanDuration }}{{ t.seconds }}</span>
             </div>
           </div>
         </div>
@@ -374,7 +374,7 @@
         <!-- 分析结果 -->
         <div class="analysis-results card" v-if="largeFiles.length > 0">
           <div class="card-header">
-            <h3>📊 {{ t.analysisResults }}</h3>
+            <h3>{{ t.analysisResults }}</h3>
             <div class="result-stats">
               <span>{{ t.foundItems.replace('{count}', String(largeFiles.length)) }}</span>
               <span class="total-size">{{ t.totalResultSize.replace('{size}', formatSize(largeFilesTotalSize)) }}</span>
@@ -529,6 +529,10 @@ import { TreemapChart } from 'echarts/charts'
 import { TooltipComponent, TitleComponent } from 'echarts/components'
 import { useDiskScanner, type FolderData } from './composables/useDiskScanner'
 import { useLanguage } from './composables/useLanguage'
+import { 
+  Brush, Search, Archive, HardDrive, Shield, AlertTriangle,
+  FolderOpen, Trash2, RotateCcw, X, File, Folder
+} from 'lucide-vue-next'
 
 // 注册 ECharts 组件
 use([CanvasRenderer, TreemapChart, TooltipComponent, TitleComponent])

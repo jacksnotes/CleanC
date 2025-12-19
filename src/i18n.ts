@@ -45,6 +45,8 @@ export const translations = {
         clickToViewSpace: '点击"开始扫描"查看空间分布',
         folders: '个目录',
         openFolder: '打开文件夹',
+        goBack: '返回上层',
+        seconds: '秒',
 
         // TOP排行
         topUsage: 'TOP 占用排行',
@@ -149,6 +151,8 @@ export const translations = {
         clickToViewSpace: 'Click "Start Scan" to view space distribution',
         folders: 'folders',
         openFolder: 'Open Folder',
+        goBack: 'Back',
+        seconds: 's',
 
         // TOP ranking
         topUsage: 'TOP Usage Ranking',
