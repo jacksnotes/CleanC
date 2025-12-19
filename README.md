@@ -105,9 +105,9 @@ I'm a novice developer who loves to tinker🙏
 
 ## 贡献 | Contributing
 
-欢迎贡献代码！如果您想提供帮助或了解当前正在进行的工作，请查看 [open issues](https://github.com/jacksnotes/CleanC/issues) 和 [project roadmap](https://github.com/jacksnotes/CleanC/projects) 来了解项目的当前方向并找到贡献的方式。
+欢迎贡献代码！如果您想提供帮助或了解当前正在进行的工作，请查看 [open issues](https://github.com/jacksnotes/CleanC/issues) 来找到贡献的方式。
 
-Contributions are welcome! If you'd like to help out or see what's currently being worked on, take a look at the [open issues](https://github.com/jacksnotes/CleanC/issues) and the [project roadmap](https://github.com/jacksnotes/CleanC/projects) to understand the current direction of the project and find ways to contribute.
+Contributions are welcome! If you'd like to help out or see what's currently being worked on, take a look at the [open issues](https://github.com/jacksnotes/CleanC/issues) to find ways to contribute.
 
 ---
 
